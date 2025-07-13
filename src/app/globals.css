@@ -2,32 +2,138 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  font-family: var(--font-inter), sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 11%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 94.1%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Enhanced typography for minimal design */
+.dark {
+  --surface: 15 23 42; /* slate-900 */
+  --card-bg: 30 41 59; /* slate-800 */
+  --main-text: 248 250 252; /* slate-50 */
+  --muted-text: 148 163 184; /* slate-400 */
+  --primary-blue: 59 130 246; /* blue-500 */
+  --secondary-yellow: 253 224 71; /* yellow-300 */
+  --accent-cyan: 34 211 238; /* cyan-300 */
+}
+
+/* Smooth scrolling and refined interactions */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for minimal aesthetic */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-700 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-600;
+}
+
+/* Enhanced focus states for accessibility */
+button:focus-visible,
+a:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-surface;
+}
+
+/* Subtle animations for premium feel */
+.group:hover .group-hover\:bg-primary\/20 {
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Typography refinements */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-feature-settings: "ss01", "ss02";
+  letter-spacing: -0.025em;
+}
+
+/* Enhanced button styles */
+button {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
 }
