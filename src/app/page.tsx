@@ -23,20 +23,18 @@ import {
 import { useRouter } from "next/navigation";
 import InternshipList from "@/components/InternshipList";
 import Link from "next/link";
+import Image from "next/image";
 
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-surface">
       {/* Navigation */}
-      <nav className="bg-surface border-b border-slate-800/50 sticky top-0 z-50 backdrop-blur-sm">
+      {/* <nav className="bg-surface border-b border-slate-800/50 sticky top-0 z-50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3">
-              <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
-                <Search className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold text-main">InternHunt</span>
+            <div className="flex items-left space-x-3">
+                <Image src="/app-logo.png" alt="InternHunt" width={140} height={140} className="flex justify-left py-2" />
             </div>
 
             <div className="hidden md:flex items-center space-x-8">
@@ -53,7 +51,7 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </nav>
+      </nav> */}
 
       {/* Hero Section */}
       <section className="pt-20 pb-16 px-6">
@@ -140,7 +138,7 @@ export default function HomePage() {
       <section className="py-12 px-6 bg-background">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-main mb-8 text-center">Latest Internships</h2>
-          <InternshipList limit={3} />
+          <InternshipList limit={3} filterTag="internship" clampText={true} minimal={true}  />
         </div>
       </section>
 

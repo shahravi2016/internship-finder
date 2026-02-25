@@ -48,7 +48,13 @@ export default function InternshipList({
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch("/api/internships?q=internship");
+        // Build the query string for the backend
+        let query = search || "internship";
+        if (filterTag) query += ` ${filterTag}`;
+        if (filterLocation) query += ` ${filterLocation}`;
+        if (filterCompany) query += ` ${filterCompany}`;
+        // Send the composed query to the backend
+        const res = await fetch(`/api/internships?q=${encodeURIComponent(query)}`);
         const data = await res.json();
         if (data.jobs_results && Array.isArray(data.jobs_results)) {
           setInternships(data.jobs_results);
@@ -62,7 +68,7 @@ export default function InternshipList({
       }
     }
     fetchInternships();
-  }, []);
+  }, [search, filterLocation, filterCompany, filterTag]);
 
   if (loading) return <div className="text-center py-8">Loading internships...</div>;
   if (error) return <div className="text-center text-red-500 py-8">{error}</div>;
