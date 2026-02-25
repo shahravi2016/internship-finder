@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🎯 Internship Hacker – AI-Powered Internship Recommender for CS Students
 
-## Getting Started
+**Internship Hacker** is a smart, AI-driven web app that helps Computer Science students instantly discover internships that match their skills — and even auto-generates a tailored resume summary and cover letter using GPT.
 
-First, run the development server:
+> 💡 Designed to save weeks of internship hunt stress.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Live Demo
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+🌐 [Try the App](https://your-vercel-link.vercel.app)  
+📸 [Screenshots](#screenshots)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+---
 
-## Learn More
+## 📦 Features
 
-To learn more about Next.js, take a look at the following resources:
+✅ **Skill-Based Internship Matching**  
+Enter your tech stack and experience level — get the top internships that match **you**.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+✅ **AI-Powered Resume Summary & Cover Letter**  
+Generate a custom resume intro and short cover letter using OpenAI/GPT.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+✅ **Fast, Minimal, No Login Needed**  
+Zero sign-up friction. Focus on results, not forms.
 
-## Deploy on Vercel
+✅ **Apply Now or Copy Content**  
+Instant access to external apply links or one-click copy to clipboard.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 🧠 How It Works
+
+1. User enters:
+   - Skills (e.g., React, Python)
+   - Year (2nd, 3rd, final)
+   - Experience level
+
+2. The app:
+   - Compares profile with a curated list of internships
+   - Uses GPT to calculate a match, write a resume summary, and generate a 1-liner cover letter
+
+3. Results are shown as clean, readable cards with:
+   - Internship details
+   - Match reason
+   - Apply link
+   - Copy buttons for resume/cover letter
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer       | Tech                         |
+|-------------|------------------------------|
+| Frontend    | Next.js 14 (App Router), TailwindCSS |
+| Backend     | API routes + Gemini |
+| Data Source | Serp API |
+| Hosting     | Vercel |
+
+---
