@@ -13,7 +13,7 @@ const config: Config = {
         primary: "#3B82F6", // Blue-500 - Better contrast on dark
         secondary: "#FDE047", // Yellow-300 - Brighter for dark backgrounds
         accent: "#22D3EE", // Cyan-300 - More vibrant on dark
-        surface: "#0F172A", // Slate-900 - Dark page background
+        surface: "#09090b", // Zinc-950 - Pure dark background
         main: "#F8FAFC", // Slate-50 - Light text on dark
         muted: "#94A3B8", // Slate-400 - Muted text on dark
         warning: "#F87171", // Red-400 - Softer red for dark theme

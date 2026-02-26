@@ -1,110 +1,209 @@
-'use client'
-
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+"use client";
+import React, { useState } from "react";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
+import { 
+  CheckCircle2, 
+  Sparkles, 
+  CreditCard, 
+  Zap, 
+  ShieldCheck, 
+  Clock, 
+  MapPin, 
+  FileText,
+  MessageCircle,
+  TrendingUp,
+  Loader2
+} from "lucide-react";
+import { useAuth, useUser } from "@clerk/nextjs";
 
 const features = [
-  { icon: "✅", title: "Full AI Matching", desc: "10+ internship matches instead of 3" },
-  { icon: "🧠", title: "Resume Feedback", desc: "AI scans your resume and gives tips" },
-  { icon: "📄", title: "Cover Letter Generator", desc: "Personalized letter for each internship" },
-  { icon: "⏰", title: "Early Access", desc: "Get internships 24 hrs before free users" },
-  { icon: "📍", title: "Location Filter", desc: "Filter by remote, hybrid, city-wise" },
-  { icon: "🏷️", title: "Verified Only Mode", desc: "Only top-trusted companies shown" },
-  { icon: "💬", title: "WhatsApp Support", desc: "Ask anything about internships" },
-  { icon: "🎓", title: "Weekly Tips Email", desc: "Career & resume growth hacks" },
+  { icon: Sparkles, title: "Neural Matching+", desc: "Unlimited AI matches instead of 3/day" },
+  { icon: FileText, title: "AI Document Studio", desc: "Custom cover letters & STAR drafts" },
+  { icon: ShieldCheck, title: "Vetted Opportunities", desc: "Elite filters for top-tier startups" },
+  { icon: Clock, title: "Priority Edge", desc: "Access listings 24h before everyone else" },
+  { icon: MapPin, title: "Global Relocation", desc: "Visa-sponsorship specific filters" },
+  { icon: MessageCircle, title: "Outreach Assistant", desc: "Automated cold DMs for recruiters" },
+  { icon: TrendingUp, title: "Resume Intelligence", desc: "AI Scorer with recursive feedback" },
+  { icon: Zap, title: "Career Pulse", desc: "Weekly high-signal internship reports" },
 ];
 
 export default function PricingPage() {
+  const { userId } = useAuth();
+  const { user } = useUser();
+  const [loading, setLoading] = useState(false);
+
+  const handlePayment = async () => {
+    if (!userId) {
+      alert("Please sign in to upgrade.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // 1. Create order on backend
+      const orderRes = await fetch("/api/checkout/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: 99 }),
+      });
+      const orderData = await orderRes.json();
+
+      if (orderData.error) throw new Error(orderData.error);
+
+      // 2. Initialize Razorpay
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
+      document.body.appendChild(script);
+
+      script.onload = () => {
+        const options = {
+          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+          amount: orderData.amount,
+          currency: "INR",
+          name: "InternHunt Pro",
+          description: "Full Career Intelligence Access",
+          order_id: orderData.id,
+          handler: async function (response: any) {
+            // In a real app, you'd call a verify-payment API here
+            alert("Payment Successful! Order ID: " + response.razorpay_order_id);
+            window.location.href = "/dashboard";
+          },
+          prefill: {
+            name: user?.fullName || "",
+            email: user?.primaryEmailAddress?.emailAddress || "",
+          },
+          theme: {
+            color: "#3B82F6",
+          },
+        };
+        // @ts-ignore
+        const rzp = new window.Razorpay(options);
+        rzp.open();
+        setLoading(false);
+      };
+    } catch (err: any) {
+      alert("Failed to initiate payment: " + err.message);
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-background py-12 px-4">
-      <Card className="w-full max-w-2xl mb-8">
-        <CardHeader>
-          <CardTitle className="text-2xl flex items-center gap-2">
-            ✨ Value Pack for Paid Users <Badge className="ml-2">Suggestions</Badge>
-          </CardTitle>
-          <CardDescription>Unlock premium features to supercharge your internship hunt!</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-            {features.map((f) => (
-              <div key={f.title} className="flex items-start gap-3">
-                <span className="text-2xl" aria-label={f.title}>{f.icon}</span>
-                <div>
-                  <div className="font-semibold">{f.title}</div>
-                  <div className="text-sm text-muted-foreground">{f.desc}</div>
-                </div>
+    <div className="min-h-screen bg-surface pt-24 pb-20 px-6">
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center mb-16">
+          <Badge className="bg-primary/10 text-primary border-primary/20 mb-4 px-4 py-1.5 rounded-full">
+            <Zap className="w-3.5 h-3.5 mr-2" />
+            <span className="text-[10px] font-black uppercase tracking-widest">Pricing & Plans</span>
+          </Badge>
+          <h1 className="text-4xl md:text-6xl font-black text-main tracking-tighter mb-4">
+            Invest in Your Future.
+          </h1>
+          <p className="text-muted font-medium text-lg max-w-xl mx-auto">
+            Upgrade to Pro and unlock the full power of AI-driven career intelligence.
+          </p>
+        </div>
+
+        <div className="grid lg:grid-cols-12 gap-8 items-stretch">
+          {/* Features Column */}
+          <div className="lg:col-span-7">
+            <Card className="bg-white/[0.02] border-white/5 rounded-[2.5rem] p-10 h-full shadow-2xl">
+              <div className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-10">Premium Intelligence Layer</div>
+              <div className="grid sm:grid-cols-2 gap-8">
+                {features.map((f, i) => (
+                  <div key={i} className="flex gap-4">
+                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
+                      <f.icon className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-main mb-1">{f.title}</div>
+                      <div className="text-xs text-muted leading-relaxed">{f.desc}</div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </Card>
           </div>
-        </CardContent>
-      </Card>
-      <Card className="w-full max-w-xl">
-        <CardHeader>
-          <CardTitle className="text-xl">⚙️ Plan Setup</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-sm border rounded-lg">
-              <thead>
-                <tr className="bg-muted">
-                  <th className="px-4 py-2 text-left">Plan</th>
-                  <th className="px-4 py-2 text-left">Price</th>
-                  <th className="px-4 py-2 text-left">Access</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="px-4 py-2 font-medium">Free</td>
-                  <td className="px-4 py-2">₹0</td>
-                  <td className="px-4 py-2">3 internship matches/day</td>
-                </tr>
-                <tr className="bg-accent/30">
-                  <td className="px-4 py-2 font-medium flex items-center gap-2">Pro <Badge variant="secondary">Recommended</Badge></td>
-                  <td className="px-4 py-2 font-bold text-primary">₹99 <span className="font-normal text-xs">one-time</span></td>
-                  <td className="px-4 py-2">Unlimited AI matches, cover letter, verified filter, resume tips</td>
-                </tr>
-              </tbody>
-            </table>
+
+          {/* Pricing Column */}
+          <div className="lg:col-span-5">
+            <div className="p-1px bg-primary rounded-[2.5rem] h-full">
+              <Card className="bg-[#09090b] rounded-[2.5rem] p-10 h-full flex flex-col relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-8 opacity-5">
+                  <CreditCard className="w-32 h-32" />
+                </div>
+
+                <div className="relative z-10 flex-1">
+                  <Badge className="bg-primary text-white font-black text-[10px] tracking-widest px-4 py-1 rounded-full mb-8">
+                    MOST POPULAR
+                  </Badge>
+                  <h3 className="text-2xl font-black text-main uppercase tracking-tighter mb-2">Pro Hunter</h3>
+                  <div className="flex items-baseline gap-1 mb-8">
+                    <span className="text-6xl font-black text-main">₹99</span>
+                    <span className="text-muted font-bold text-sm tracking-widest uppercase">/One-Time</span>
+                  </div>
+
+                  <ul className="space-y-5 mb-12">
+                    {[
+                      "Lifetime access to AI matching",
+                      "Priority Support Hub",
+                      "Custom STAR Drafter access",
+                      "Elite Startup Feed"
+                    ].map((t, i) => (
+                      <li key={i} className="flex items-center gap-3 text-sm font-bold text-main/80">
+                        <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <Button 
+                  onClick={handlePayment}
+                  disabled={loading}
+                  className="w-full h-16 bg-primary hover:bg-primary/90 text-white rounded-2xl text-base font-black tracking-widest shadow-2xl shadow-primary/30 relative z-10 group"
+                >
+                  {loading ? (
+                    <Loader2 className="w-6 h-6 animate-spin" />
+                  ) : (
+                    <>
+                      UPGRADE TO PRO
+                      <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
+                    </>
+                  )}
+                </Button>
+                
+                <p className="text-center text-[10px] text-muted font-bold uppercase tracking-widest mt-6 relative z-10">
+                  Secure Payment via Razorpay
+                </p>
+              </Card>
+            </div>
           </div>
-        </CardContent>
-        <CardFooter className="flex flex-col items-center gap-2">
-          <Button className="w-full max-w-xs" onClick={() => {
-            if (typeof window !== 'undefined') {
-              const script = document.createElement('script');
-              script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-              script.async = true;
-              document.body.appendChild(script);
-              script.onload = () => {
-                const options = {
-                  key: 'YOUR_RAZORPAY_KEY', // Replace with your Razorpay key
-                  amount: 9900, // 99 INR in paise
-                  currency: 'INR',
-                  name: 'InternHunt Pro',
-                  description: 'Unlock all premium features',
-                  image: '/app-logo.png',
-                  handler: function (response: any) {
-                    alert('Payment successful! Payment ID: ' + response.razorpay_payment_id);
-                  },
-                  prefill: {
-                    email: '',
-                  },
-                  theme: {
-                    color: '#6366f1',
-                  },
-                };
-                // @ts-ignore
-                const rzp = new window.Razorpay(options);
-                rzp.open();
-              };
-            }
-          }}>
-            Upgrade to Pro with Razorpay
-          </Button>
-          <div className="text-xs text-muted-foreground mt-1">One-time payment. No hidden fees.</div>
-        </CardFooter>
-      </Card>
+        </div>
+      </div>
     </div>
   );
-} 
+}
+
+// Minimal Arrow icon for the button
+function ArrowRight(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M5 12h14" />
+      <path d="m12 5 7 7-7 7" />
+    </svg>
+  )
+}
